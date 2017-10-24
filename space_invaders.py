@@ -1,6 +1,17 @@
 #!/usr/local/bin/python
 # coding: latin-1
 
+"""
+V 0.1
+The goal for player ship is to shoot down enemy ships as the come down to the player base.
+The graphics in this version havent been optimized.
+To play, use arrow keys left and right to move left and right respectively.
+Hit space to shoot
+Next version will have classes implemented and efficiency improved
+
+"""
+
+
 import turtle
 import os
 import math

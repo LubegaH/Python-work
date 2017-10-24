@@ -27,6 +27,11 @@ turtle.ht()
 turtle.setundobuffer(1)
 turtle.tracer(0)
 
+# Registering the shapes
+turtle.register_shape("enemy.gif")
+turtle.register_shape("friendly.gif")
+turtle.register_shape("bullet.gif")
+
 
 # setting up a class for sprites
 class Sprite(turtle.Turtle):
@@ -130,6 +135,7 @@ class Payload(Sprite):
 		self.speed = 25
 		self.status = "loaded"
 		self.goto(-1000,1000)
+
 		
 
 	def fire(self):
@@ -215,19 +221,19 @@ game.show_status()
 
 # Initializing sprites
 player = Player("triangle", "white", 0, 0)
-payload = Payload("triangle", "yellow", 0, 0)
+payload = Payload("bullet.gif", "yellow", 0, 0)
 # friend = Friend("circle", "blue", 100, 100)
 # Creating multiple friends
 friends = []
 for k in range(3):
-	friends.append(Friend("circle", "blue", 100, 100))
+	friends.append(Friend("friendly.gif", "blue", 100, 100))
 # Creating a single enemy
 # enemy = Enemy("triangle", "red", 220, 220)
 
 # Creating multiple enemies
 enemies = []
 for i in range(8):
-	enemies.append(Enemy("square", "red", 220, 220))
+	enemies.append(Enemy("enemy.gif", "red", 220, 220))
 
 # Creating the particles
 particles = []
@@ -266,6 +272,9 @@ while True:
 
 		# check for friend destruction by payload
 		if payload.isCollision(friend):
+			os.system("afplay explosion.mp3&")
+			for particle in particles:
+				particle.explode(payload.xcor(), payload.ycor())
 			x = random.randint(-250, 250)
 			y = random.randint(-250, 250)
 			friend.goto(x, y)
@@ -290,6 +299,8 @@ while True:
 		if payload.isCollision(enemy):
 			# play explosion sound
 			os.system("afplay explosion.mp3&")
+			for particle in particles:
+				particle.explode(payload.xcor(), payload.ycor())
 			x = random.randint(-250, 250)
 			y = random.randint(-250, 250)
 			enemy.goto(x, y)
@@ -297,8 +308,7 @@ while True:
 			# update game score
 			game.score += 10
 			game.show_status()
-			for particle in particles:
-				particle.explode(payload.xcor(), payload.ycor())
+			
 
 	for particle in particles:
 		particle.move()
